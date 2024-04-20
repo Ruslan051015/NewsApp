@@ -1,9 +1,9 @@
 import Foundation
 import UIKit
 
-final class CustomTableViewCell: UITableViewCell {
+final class MainUICollectionViewCell: UICollectionViewCell {
   // MARK: - Properties:
-  static let reuseID = "CustomUITableViewCell"
+  static let reuseID = "MainUICollectionViewCell"
   
   // MARK: - Private Properties:
   private var newsModel: NewsModel?
@@ -15,18 +15,19 @@ final class CustomTableViewCell: UITableViewCell {
     collectionNews.dataSource = self
     collectionNews.delegate = self
     collectionNews.allowsMultipleSelection = false
-    collectionNews.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
-    collectionNews.register(CustomUICollectionViewCell.self, forCellWithReuseIdentifier: CustomUICollectionViewCell.reuseID)
+    collectionNews.contentInset = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    collectionNews.register(SecondaryUICollectionViewCell.self, forCellWithReuseIdentifier: SecondaryUICollectionViewCell.reuseID)
+    collectionNews.showsHorizontalScrollIndicator = false
     
     return collectionNews
   }()
   
   // MARK: - LifeCycle:
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.contentView.backgroundColor = .clear
     setupLayout()
     setupConstraint()
-    self.backgroundColor = .clear
   }
   
   required init?(coder: NSCoder) {
@@ -35,7 +36,7 @@ final class CustomTableViewCell: UITableViewCell {
 }
 
 // MARK: - Methods:
-extension CustomTableViewCell {
+extension MainUICollectionViewCell {
   func configureCell(with model: NewsModel) {
     self.newsModel = model
     self.newsCollection.reloadData()
@@ -43,7 +44,7 @@ extension CustomTableViewCell {
 }
 
 // MARK: - Private Methods:
-extension CustomTableViewCell {
+extension MainUICollectionViewCell {
   private func setupLayout() {
     newsCollection.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(newsCollection)
@@ -59,20 +60,20 @@ extension CustomTableViewCell {
   }
 }
 // MARK: - UITableViewDelegate
-extension CustomTableViewCell: UICollectionViewDelegateFlowLayout {
+extension MainUICollectionViewCell: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     CGSize(width: self.contentView.frame.width / 2.4, height: self.contentView.frame.height)
   }
 }
 
 // MARK: - UITableViewDataSource
-extension CustomTableViewCell: UICollectionViewDataSource {
+extension MainUICollectionViewCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     5
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CustomUICollectionViewCell.reuseID, for: indexPath) as? CustomUICollectionViewCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondaryUICollectionViewCell.reuseID, for: indexPath) as? SecondaryUICollectionViewCell else {
       return UICollectionViewCell()
     }
     guard let newsModel else {

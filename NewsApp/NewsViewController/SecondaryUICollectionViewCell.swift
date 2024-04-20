@@ -1,9 +1,9 @@
 import Foundation
 import UIKit
 
-final class CustomUICollectionViewCell: UICollectionViewCell {
+final class SecondaryUICollectionViewCell: UICollectionViewCell {
   // MARK: - Properties:
-  static let reuseID = "CustomUICollectionViewCell"
+  static let reuseID = "SecondaryUICollectionViewCell"
   
   // MARK: - Private Properties:
   private lazy var newsImageView: UIImageView = {
@@ -44,7 +44,7 @@ final class CustomUICollectionViewCell: UICollectionViewCell {
 }
 
 // MARK: - Methods:
-extension CustomUICollectionViewCell {
+extension SecondaryUICollectionViewCell {
   func configureCell(with model:NewsModel) {
     newsLabel.text = model.title
     let image = UIImage(named: model.imageName)
@@ -53,7 +53,7 @@ extension CustomUICollectionViewCell {
 }
 
 // MARK: - Provate Methods:
-extension CustomUICollectionViewCell {
+extension SecondaryUICollectionViewCell {
   private func setupLayout() {
     newsImageView.translatesAutoresizingMaskIntoConstraints = false
     newsLabel.translatesAutoresizingMaskIntoConstraints = false

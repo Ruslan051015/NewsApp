@@ -8,18 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		4ADF7BF12BD3E75F0079D710 /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF02BD3E75F0079D710 /* NewsModel.swift */; };
-		4ADF7BF32BD3EE2F0079D710 /* UITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF22BD3EE2F0079D710 /* UITableViewCell.swift */; };
+		4ADF7BF32BD3EE2F0079D710 /* MainUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF22BD3EE2F0079D710 /* MainUICollectionViewCell.swift */; };
+		4ADF7BF52BD4143D0079D710 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF42BD4143D0079D710 /* SupplementaryView.swift */; };
 		4AE1ADB72BD2819B00EDC2F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ADB62BD2819B00EDC2F1 /* AppDelegate.swift */; };
 		4AE1ADB92BD2819B00EDC2F1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ADB82BD2819B00EDC2F1 /* SceneDelegate.swift */; };
 		4AE1ADBB2BD2819B00EDC2F1 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ADBA2BD2819B00EDC2F1 /* NewsViewController.swift */; };
 		4AE1ADC02BD2819C00EDC2F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4AE1ADBF2BD2819C00EDC2F1 /* Assets.xcassets */; };
 		4AE1ADC32BD2819C00EDC2F1 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 4AE1ADC22BD2819C00EDC2F1 /* Base */; };
-		4AE1ADCC2BD3047A00EDC2F1 /* UICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ADCB2BD3047A00EDC2F1 /* UICollectionViewCell.swift */; };
+		4AE1ADCC2BD3047A00EDC2F1 /* SecondaryUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AE1ADCB2BD3047A00EDC2F1 /* SecondaryUICollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4ADF7BF02BD3E75F0079D710 /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
-		4ADF7BF22BD3EE2F0079D710 /* UITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewCell.swift; sourceTree = "<group>"; };
+		4ADF7BF22BD3EE2F0079D710 /* MainUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUICollectionViewCell.swift; sourceTree = "<group>"; };
+		4ADF7BF42BD4143D0079D710 /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		4AE1ADB32BD2819B00EDC2F1 /* NewsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4AE1ADB62BD2819B00EDC2F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4AE1ADB82BD2819B00EDC2F1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,7 +29,7 @@
 		4AE1ADBF2BD2819C00EDC2F1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4AE1ADC22BD2819C00EDC2F1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4AE1ADC42BD2819C00EDC2F1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4AE1ADCB2BD3047A00EDC2F1 /* UICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewCell.swift; sourceTree = "<group>"; };
+		4AE1ADCB2BD3047A00EDC2F1 /* SecondaryUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryUICollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +85,9 @@
 			isa = PBXGroup;
 			children = (
 				4AE1ADBA2BD2819B00EDC2F1 /* NewsViewController.swift */,
-				4AE1ADCB2BD3047A00EDC2F1 /* UICollectionViewCell.swift */,
-				4ADF7BF22BD3EE2F0079D710 /* UITableViewCell.swift */,
+				4AE1ADCB2BD3047A00EDC2F1 /* SecondaryUICollectionViewCell.swift */,
+				4ADF7BF22BD3EE2F0079D710 /* MainUICollectionViewCell.swift */,
+				4ADF7BF42BD4143D0079D710 /* SupplementaryView.swift */,
 			);
 			path = NewsViewController;
 			sourceTree = "<group>";
@@ -161,8 +164,9 @@
 			files = (
 				4AE1ADBB2BD2819B00EDC2F1 /* NewsViewController.swift in Sources */,
 				4AE1ADB72BD2819B00EDC2F1 /* AppDelegate.swift in Sources */,
-				4AE1ADCC2BD3047A00EDC2F1 /* UICollectionViewCell.swift in Sources */,
-				4ADF7BF32BD3EE2F0079D710 /* UITableViewCell.swift in Sources */,
+				4ADF7BF52BD4143D0079D710 /* SupplementaryView.swift in Sources */,
+				4AE1ADCC2BD3047A00EDC2F1 /* SecondaryUICollectionViewCell.swift in Sources */,
+				4ADF7BF32BD3EE2F0079D710 /* MainUICollectionViewCell.swift in Sources */,
 				4AE1ADB92BD2819B00EDC2F1 /* SceneDelegate.swift in Sources */,
 				4ADF7BF12BD3E75F0079D710 /* NewsModel.swift in Sources */,
 			);
