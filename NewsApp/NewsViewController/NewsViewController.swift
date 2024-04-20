@@ -1,27 +1,29 @@
 import UIKit
 
 class NewsViewController: UIViewController {
-// MARK: - Properties:
+  // MARK: - Properties:
   
   // MARK: - Private Properties:
-  private lazy var newsCollection: UICollectionView = {
-    let layout = UICollectionViewFlowLayout()
-    layout.scrollDirection = .horizontal
-    let collectionNews = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    collectionNews.backgroundColor = .clear
-    collectionNews.dataSource = self
-    collectionNews.delegate = self
-    collectionNews.allowsMultipleSelection = false
+  private lazy var newsTable: UITableView = {
+    let table = UITableView()
+    table.backgroundColor = .clear
+    table.separatorStyle = .none
+    table.allowsMultipleSelection = false
+    table.dataSource = self
+    table.delegate = self
+    table.register(CustomTableViewCell.self, forCellReuseIdentifier: CustomTableViewCell.reuseID)
+    table.showsVerticalScrollIndicator = false
     
-    return collectionNews
+    return table
   }()
+  
   // MARK: - LifeCycle:
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.background
     configureNavbar()
-    configureLayout()
-    configureConstraints()
+    setupLayout()
+    setupConstraints()
   }
 }
 
@@ -33,26 +35,26 @@ extension NewsViewController {
       let navBarAppearance = UINavigationBarAppearance()
       navBarAppearance.configureWithOpaqueBackground()
       navBarAppearance.backgroundColor = .clear
-      navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black]
+      navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.blackAndWhite]
       navigationController?.navigationBar.standardAppearance = navBarAppearance
       navigationController?.navigationItem.standardAppearance = navBarAppearance
       navigationItem.compactAppearance = navBarAppearance
     }
   }
   
-  private func configureLayout() {
-    [newsCollection].forEach {
+  private func setupLayout() {
+    [newsTable].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview($0)
     }
   }
   
-  private func configureConstraints() {
+  private func setupConstraints() {
     NSLayoutConstraint.activate([
-      newsCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-      newsCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      newsCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      newsCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      newsTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+      newsTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+      newsTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      newsTable.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
   }
 }
@@ -62,20 +64,43 @@ extension NewsViewController {
   
 }
 
-// MARK: - UICollectionViewDelegate
-extension NewsViewController: UICollectionViewDelegate {
+// MARK: - UITableViewDelegate
+extension NewsViewController: UITableViewDelegate {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    3
+  }
+  
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    250
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 20 ))
+    headerView.backgroundColor = .clear
+    let label = UILabel(frame: CGRect(x: 12, y: 0, width: headerView.bounds.width - 12, height: headerView.bounds.height))
+    label.textAlignment = .left
+    label.font = .boldSystemFont(ofSize: 18)
+    label.textColor = .blackAndWhite
+    label.text = "Section"
+    headerView.addSubview(label)
+    
+    return headerView
+  }
   
 }
 
-// MARK: - UICollectionViewDataSource
-extension NewsViewController: UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+// MARK: - UITableViewDataSource
+extension NewsViewController: UITableViewDataSource {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     1
   }
   
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    UICollectionViewCell()
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.reuseID, for: indexPath) as? CustomTableViewCell else {
+      return UITableViewCell()
+    }
+    cell.configureCell(with: NewsModel(title: "Hello! My name is Ruslan Khalilulin. I'm an iOS developer. I'm trying to find a jib in IT. I Will be very good developer and always one of the best wherever I' work in", imageName: "myImage"))
+    
+    return cell
   }
-  
-  
 }
