@@ -6,12 +6,12 @@ class NewsViewController: UIViewController {
     "business",
     "entertainment",
     "general",
-    "health",
-    "nation",
-    "science",
-    "sports",
-    "technology",
-    "world"
+//    "health",
+//    "nation",
+//    "science",
+//    "sports",
+//    "technology",
+//    "world"
   ]
   private var news: [String: [ArticleModel]]? = [:]
   private let networkClient = NetworkClient()
@@ -34,10 +34,10 @@ class NewsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.backgroundColor = UIColor.background
+    UIBlockingProgressHUD.show()
     configureNavbar()
     setupLayout()
     setupConstraints()
-    UIBlockingProgressHUD.show()
     networkClient.fetchNews(for: newsCategories) { [weak self] result in
       guard let self else { return }
       self.news = result
