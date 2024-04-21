@@ -1,9 +1,19 @@
 import UIKit
 
 class NewsViewController: UIViewController {
-  // MARK: - Properties:
-  
   // MARK: - Private Properties:
+  private let newsCategories = [
+    "business",
+    "entertainment",
+    "general",
+    "health",
+    "nation",
+    "science",
+    "sports",
+    "technology",
+    "world"
+  ]
+  private let networkClient = NetworkClient()
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -26,6 +36,7 @@ class NewsViewController: UIViewController {
     configureNavbar()
     setupLayout()
     setupConstraints()
+//    networkClient.fetchNews(for: newsCategories)
   }
 }
 
@@ -69,7 +80,7 @@ extension NewsViewController {
 // MARK: - UICollectionViewDelegateFlowLayout:
 extension NewsViewController: UICollectionViewDelegateFlowLayout {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    3
+    newsCategories.count
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -80,8 +91,8 @@ extension NewsViewController: UICollectionViewDelegateFlowLayout {
     guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SupplementaryView.reuseId, for: indexPath) as? SupplementaryView else {
       return UICollectionReusableView()
     }
-    
-    headerView.titleLabel.text = "Section"
+    let headerTitle = newsCategories[indexPath.section].capitilizingFirstLetter()
+    headerView.titleLabel.text = headerTitle
     
     return headerView
   }
