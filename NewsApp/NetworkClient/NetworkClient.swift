@@ -9,8 +9,8 @@ final class NetworkClient {
   private let urlsession = URLSession.shared
   
   // MARK: - Methods:
-  func fetchNews(for categories: [String], completion: @escaping ([String: [ArticleModel]]) -> Void) {
-    var newsDictionary = [String: [ArticleModel]]()
+  func fetchNews(for categories: [String], completion: @escaping ([CategoryModel]) -> Void) {
+    var categoriesArray = [CategoryModel]()
     let group = DispatchGroup()
     
     categories.forEach { category in
@@ -27,7 +27,8 @@ final class NetworkClient {
           .responseDecodable(of: ResponseModel.self) { response in
             switch response.result {
             case .success(let data):
-              newsDictionary[category] = data.articles
+              let category = CategoryModel(name: category, articles: data.articles)
+              categoriesArray.append(category)
             case .failure(let error):
               print(error.localizedDescription)
             }
@@ -37,11 +38,9 @@ final class NetworkClient {
       group.wait(timeout: .now() + 1.3)
     }
     group.notify(queue: .main) {
-      let sortedKeys = newsDictionary.keys.sorted()
-      let sortedDictionary = sortedKeys.reduce(into: [String: [ArticleModel]]()) { (result, key) in
-        result[key] = newsDictionary[key]
-      }
-      completion(sortedDictionary)
+      let sortedArray = categoriesArray.sorted { $0.name < $1.name  }
+      completion(sortedArray)
     }
   }
 }
+

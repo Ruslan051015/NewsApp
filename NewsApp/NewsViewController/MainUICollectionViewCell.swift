@@ -7,7 +7,7 @@ final class MainUICollectionViewCell: UICollectionViewCell {
   static let reuseID = "MainUICollectionViewCell"
   
   // MARK: - Private Properties:
-  private var articles: [ArticleModel]? = []
+  private var articles: CategoryModel?
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
@@ -38,7 +38,7 @@ final class MainUICollectionViewCell: UICollectionViewCell {
 
 // MARK: - Methods:
 extension MainUICollectionViewCell {
-  func configureCell(with articles: [ArticleModel]) {
+  func configureCell(with articles: CategoryModel) {
     self.articles = articles
     newsCollection.reloadData()
   }
@@ -84,7 +84,7 @@ extension MainUICollectionViewCell: UICollectionViewDelegateFlowLayout {
 extension MainUICollectionViewCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if let articles {
-      return articles.count
+      return articles.articles.count
     } else {
       return 0
     }
@@ -96,7 +96,7 @@ extension MainUICollectionViewCell: UICollectionViewDataSource {
       return UICollectionViewCell()
     }
     
-    let article = articles[indexPath.row]
+    let article = articles.articles[indexPath.row]
     cell.configureCell(with: article)
     return cell
   }

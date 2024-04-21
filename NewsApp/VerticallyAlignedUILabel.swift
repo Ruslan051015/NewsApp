@@ -21,16 +21,3 @@ class VerticallyAlignedUILabel: UILabel {
     super.drawText(in: rect)
   }
 }
-
-extension UIImageView {
-  
-  func makeGradient() {
-    let gradient = CAGradientLayer()
-    gradient.frame = self.bounds
-    gradient.contents = self.image?.cgImage
-    gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-    gradient.startPoint = CGPoint(x: 0.5, y: 0.5)
-    gradient.endPoint = CGPoint(x: 0.5, y: 1)
-    self.layer.insertSublayer(gradient, at: 0)
-  }
-}

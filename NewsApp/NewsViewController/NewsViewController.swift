@@ -4,7 +4,7 @@ class NewsViewController: UIViewController {
   // MARK: - Private Properties:
   private let newsCategories = [
     "business",
-    "entertainment",
+//    "entertainment",
 //    "general",
 //    "health",
 //    "nation",
@@ -13,8 +13,9 @@ class NewsViewController: UIViewController {
 //    "technology",
 //    "world"
   ]
-  private var news: [String: [ArticleModel]]? = [:]
+  private var news: [CategoryModel]? = []
   private let networkClient = NetworkClient()
+  private let categoryStore = CategoryStore.shared
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -38,12 +39,18 @@ class NewsViewController: UIViewController {
     configureNavbar()
     setupLayout()
     setupConstraints()
-    networkClient.fetchNews(for: newsCategories) { [weak self] result in
-      guard let self else { return }
-      self.news = result
-      newsCollection.reloadData()
-      UIBlockingProgressHUD.hide()
-    }
+    let categoies = try? categoryStore.fetchCategories()
+    print(categoies)
+//    networkClient.fetchNews(for: newsCategories) { [weak self] result in
+//      guard let self else { return }
+//      self.news = result
+//      newsCollection.reloadData()
+//      for category in result {
+//        category.articles.forEach { self.categoryStore.createCoreDataArticle(from: $0, and: category.name)
+//        }
+//      }
+//      UIBlockingProgressHUD.hide()
+//    }
   }
 }
 
@@ -102,8 +109,7 @@ extension NewsViewController: UICollectionViewDelegateFlowLayout {
           let news else {
       return UICollectionReusableView()
     }
-    let keys = Array(news.keys)
-    headerView.titleLabel.text = keys[indexPath.section].capitilizingFirstLetter()
+    headerView.titleLabel.text = news[indexPath.section].name.capitilizingFirstLetter()
     
     return headerView
   }
@@ -134,9 +140,8 @@ extension NewsViewController: UICollectionViewDataSource {
           let news else {
       return UICollectionViewCell()
     }
-    let categoryKeys = Array(news.keys)
-    let currentSectionCategory = categoryKeys[indexPath.section]
-    cell.configureCell(with: news[currentSectionCategory] ?? [])
+    let currentSectionCategory = news[indexPath.section]
+    cell.configureCell(with: currentSectionCategory)
     
     return cell
   }

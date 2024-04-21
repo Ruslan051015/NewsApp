@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ArticleCoreDataModel" representedClassName="ArticleCoreDataModel" syncable="YES" codeGenerationType="class">
         <attribute name="image" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
@@ -8,6 +8,6 @@
     </entity>
     <entity name="CategoryCoreDataModel" representedClassName="CategoryCoreDataModel" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <relationship name="articles" maxCount="1" deletionRule="Nullify" destinationEntity="ArticleCoreDataModel" inverseName="category" inverseEntity="ArticleCoreDataModel"/>
+        <relationship name="articles" toMany="YES" deletionRule="Nullify" destinationEntity="ArticleCoreDataModel" inverseName="category" inverseEntity="ArticleCoreDataModel"/>
     </entity>
 </model>

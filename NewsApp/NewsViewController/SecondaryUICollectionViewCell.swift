@@ -49,12 +49,17 @@ final class SecondaryUICollectionViewCell: UICollectionViewCell {
 // MARK: - Methods:
 extension SecondaryUICollectionViewCell {
   func configureCell(with article:ArticleModel) {
-    
     newsLabel.text = article.title
     let imageToURL = URL(string: article.image)
     newsImageView.kf.indicatorType = .activity
-    newsImageView.kf.setImage(with: imageToURL, placeholder: UIImage.placeholder) { [weak self] result in
-      guard let self else { return }
+    newsImageView.kf.setImage(
+      with: imageToURL,
+      placeholder: UIImage.placeholder,
+      options: [.cacheOriginalImage]
+    ) { [weak self] result in
+      guard let self else {
+        return
+      }
       self.addGradient()
     }
     self.articleURL = article.url
