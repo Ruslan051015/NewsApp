@@ -1,12 +1,13 @@
 import Foundation
 import UIKit
+import SafariServices
 
 final class MainUICollectionViewCell: UICollectionViewCell {
   // MARK: - Properties:
   static let reuseID = "MainUICollectionViewCell"
   
   // MARK: - Private Properties:
-  private var newsModel: NewsModel?
+  private var articles: [ArticleModel]? = []
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .horizontal
@@ -37,9 +38,9 @@ final class MainUICollectionViewCell: UICollectionViewCell {
 
 // MARK: - Methods:
 extension MainUICollectionViewCell {
-  func configureCell(with model: NewsModel) {
-    self.newsModel = model
-    self.newsCollection.reloadData()
+  func configureCell(with articles: [ArticleModel]) {
+    self.articles = articles
+    newsCollection.reloadData()
   }
 }
 
@@ -64,23 +65,36 @@ extension MainUICollectionViewCell: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     CGSize(width: self.contentView.frame.width / 2.4, height: self.contentView.frame.height)
   }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let cell = collectionView.cellForItem(at: indexPath) as? SecondaryUICollectionViewCell,
+    let articleURLString = cell.articleURL,
+    let articleURL = URL(string: articleURLString) else {
+      return
+    }
+    let safaviView = SFSafariViewController(url: articleURL)
+    UIApplication.shared.windows.first?.rootViewController?.present(safaviView, animated: true)
+  }
 }
 
 // MARK: - UITableViewDataSource
 extension MainUICollectionViewCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    5
+    if let articles {
+      return articles.count
+    } else {
+      return 0
+    }
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondaryUICollectionViewCell.reuseID, for: indexPath) as? SecondaryUICollectionViewCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SecondaryUICollectionViewCell.reuseID, for: indexPath) as? SecondaryUICollectionViewCell,
+          let articles else {
       return UICollectionViewCell()
     }
-    guard let newsModel else {
-      return UICollectionViewCell()
-    }
-    cell.configureCell(with: newsModel)
     
+    let article = articles[indexPath.row]
+    cell.configureCell(with: article)
     return cell
   }
 }

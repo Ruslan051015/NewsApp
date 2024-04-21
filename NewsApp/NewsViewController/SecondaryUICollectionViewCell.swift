@@ -1,9 +1,11 @@
 import Foundation
 import UIKit
+import Kingfisher
 
 final class SecondaryUICollectionViewCell: UICollectionViewCell {
   // MARK: - Properties:
   static let reuseID = "SecondaryUICollectionViewCell"
+  var articleURL: String?
   
   // MARK: - Private Properties:
   private lazy var newsImageView: UIImageView = {
@@ -40,15 +42,19 @@ final class SecondaryUICollectionViewCell: UICollectionViewCell {
     super.prepareForReuse()
     newsLabel.text = ""
     newsImageView.image = nil
+    articleURL = nil
   }
 }
 
 // MARK: - Methods:
 extension SecondaryUICollectionViewCell {
-  func configureCell(with model:NewsModel) {
-    newsLabel.text = model.title
-    let image = UIImage(named: model.imageName)
-    newsImageView.image = image
+  func configureCell(with article:ArticleModel) {
+    newsLabel.text = article.title
+    let url = article.image
+    let imageToURL = URL(string: article.image)
+    newsImageView.kf.indicatorType = .activity
+    newsImageView.kf.setImage(with: imageToURL, placeholder: UIImage.placeholder, options: [.transition(.fade(1))])
+    self.articleURL = article.url
   }
 }
 

@@ -11,6 +11,9 @@
 		4AAA9EA62BD5474700E9D865 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EA52BD5474700E9D865 /* NetworkClient.swift */; };
 		4AAA9EA92BD5478100E9D865 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4AAA9EA82BD5478100E9D865 /* Alamofire */; };
 		4AAA9EAC2BD56AA800E9D865 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EAB2BD56AA800E9D865 /* String + Extension.swift */; };
+		4AAA9EAF2BD56DF600E9D865 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4AAA9EAE2BD56DF600E9D865 /* ProgressHUD */; };
+		4AAA9EB12BD56E0A00E9D865 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EB02BD56E0A00E9D865 /* UIBlockingProgressHUD.swift */; };
+		4AAA9EB42BD5756400E9D865 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4AAA9EB32BD5756400E9D865 /* Kingfisher */; };
 		4ADF7BF12BD3E75F0079D710 /* NewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF02BD3E75F0079D710 /* NewsModel.swift */; };
 		4ADF7BF32BD3EE2F0079D710 /* MainUICollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF22BD3EE2F0079D710 /* MainUICollectionViewCell.swift */; };
 		4ADF7BF52BD4143D0079D710 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ADF7BF42BD4143D0079D710 /* SupplementaryView.swift */; };
@@ -26,6 +29,7 @@
 		4AAA9EA22BD545C800E9D865 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		4AAA9EA52BD5474700E9D865 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		4AAA9EAB2BD56AA800E9D865 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
+		4AAA9EB02BD56E0A00E9D865 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		4ADF7BF02BD3E75F0079D710 /* NewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsModel.swift; sourceTree = "<group>"; };
 		4ADF7BF22BD3EE2F0079D710 /* MainUICollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUICollectionViewCell.swift; sourceTree = "<group>"; };
 		4ADF7BF42BD4143D0079D710 /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
@@ -44,7 +48,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AAA9EB42BD5756400E9D865 /* Kingfisher in Frameworks */,
 				4AAA9EA92BD5478100E9D865 /* Alamofire in Frameworks */,
+				4AAA9EAF2BD56DF600E9D865 /* ProgressHUD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,6 +110,7 @@
 				4AE1ADBF2BD2819C00EDC2F1 /* Assets.xcassets */,
 				4AE1ADC12BD2819C00EDC2F1 /* LaunchScreen.storyboard */,
 				4AE1ADC42BD2819C00EDC2F1 /* Info.plist */,
+				4AAA9EB02BD56E0A00E9D865 /* UIBlockingProgressHUD.swift */,
 			);
 			path = NewsApp;
 			sourceTree = "<group>";
@@ -137,6 +144,8 @@
 			name = NewsApp;
 			packageProductDependencies = (
 				4AAA9EA82BD5478100E9D865 /* Alamofire */,
+				4AAA9EAE2BD56DF600E9D865 /* ProgressHUD */,
+				4AAA9EB32BD5756400E9D865 /* Kingfisher */,
 			);
 			productName = NewsApp;
 			productReference = 4AE1ADB32BD2819B00EDC2F1 /* NewsApp.app */;
@@ -168,6 +177,8 @@
 			mainGroup = 4AE1ADAA2BD2819A00EDC2F1;
 			packageReferences = (
 				4AAA9EA72BD5478100E9D865 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4AAA9EAD2BD56DF600E9D865 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
+				4AAA9EB22BD5756400E9D865 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			productRefGroup = 4AE1ADB42BD2819B00EDC2F1 /* Products */;
 			projectDirPath = "";
@@ -204,6 +215,7 @@
 				4AAA9EA62BD5474700E9D865 /* NetworkClient.swift in Sources */,
 				4AE1ADB92BD2819B00EDC2F1 /* SceneDelegate.swift in Sources */,
 				4ADF7BF12BD3E75F0079D710 /* NewsModel.swift in Sources */,
+				4AAA9EB12BD56E0A00E9D865 /* UIBlockingProgressHUD.swift in Sources */,
 				4AAA9EA32BD545C800E9D865 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -433,6 +445,22 @@
 				minimumVersion = 5.9.1;
 			};
 		};
+		4AAA9EAD2BD56DF600E9D865 /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/relatedcode/ProgressHUD?ysclid=lu8kzkastq943127406";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.1;
+			};
+		};
+		4AAA9EB22BD5756400E9D865 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher?ysclid=lv9qnzv1su732640608";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -440,6 +468,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4AAA9EA72BD5478100E9D865 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		4AAA9EAE2BD56DF600E9D865 /* ProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AAA9EAD2BD56DF600E9D865 /* XCRemoteSwiftPackageReference "ProgressHUD" */;
+			productName = ProgressHUD;
+		};
+		4AAA9EB32BD5756400E9D865 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AAA9EB22BD5756400E9D865 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

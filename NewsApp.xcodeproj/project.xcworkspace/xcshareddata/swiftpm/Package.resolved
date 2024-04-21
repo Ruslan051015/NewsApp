@@ -1,5 +1,5 @@
 {
-  "originHash" : "68f354f697cd323a6c4db6de08efb06930f7605a9523ead6d15299cab0cd6fe9",
+  "originHash" : "fddd1e116655a5674cbfeecaf837d26a407ba05a4707272166baf359525da66f",
   "pins" : [
     {
       "identity" : "alamofire?ysclid=lus3gx2ytl294112242",
@@ -8,6 +8,24 @@
       "state" : {
         "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
         "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "kingfisher?ysclid=lv9qnzv1su732640608",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher?ysclid=lv9qnzv1su732640608",
+      "state" : {
+        "revision" : "5b92f029fab2cce44386d28588098b5be0824ef5",
+        "version" : "7.11.0"
+      }
+    },
+    {
+      "identity" : "progresshud?ysclid=lu8kzkastq943127406",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/relatedcode/ProgressHUD?ysclid=lu8kzkastq943127406",
+      "state" : {
+        "revision" : "fd18c75d5f650a949e1da5fc725a1c1b523bbf8e",
+        "version" : "14.1.1"
       }
     }
   ],

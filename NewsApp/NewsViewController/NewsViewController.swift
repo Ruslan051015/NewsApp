@@ -13,6 +13,7 @@ class NewsViewController: UIViewController {
     "technology",
     "world"
   ]
+  private var news: [String: [ArticleModel]]? = [:]
   private let networkClient = NetworkClient()
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -36,7 +37,13 @@ class NewsViewController: UIViewController {
     configureNavbar()
     setupLayout()
     setupConstraints()
-//    networkClient.fetchNews(for: newsCategories)
+    UIBlockingProgressHUD.show()
+    networkClient.fetchNews(for: newsCategories) { [weak self] result in
+      guard let self else { return }
+      self.news = result
+      newsCollection.reloadData()
+      UIBlockingProgressHUD.hide()
+    }
   }
 }
 
@@ -80,7 +87,10 @@ extension NewsViewController {
 // MARK: - UICollectionViewDelegateFlowLayout:
 extension NewsViewController: UICollectionViewDelegateFlowLayout {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    newsCategories.count
+    guard let news else {
+      return 0
+    }
+    return news.count
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -88,11 +98,12 @@ extension NewsViewController: UICollectionViewDelegateFlowLayout {
   }
   
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SupplementaryView.reuseId, for: indexPath) as? SupplementaryView else {
+    guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SupplementaryView.reuseId, for: indexPath) as? SupplementaryView,
+          let news else {
       return UICollectionReusableView()
     }
-    let headerTitle = newsCategories[indexPath.section].capitilizingFirstLetter()
-    headerView.titleLabel.text = headerTitle
+    let keys = Array(news.keys)
+    headerView.titleLabel.text = keys[indexPath.section].capitilizingFirstLetter()
     
     return headerView
   }
@@ -119,10 +130,13 @@ extension NewsViewController: UICollectionViewDataSource {
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainUICollectionViewCell.reuseID, for: indexPath) as? MainUICollectionViewCell else {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainUICollectionViewCell.reuseID, for: indexPath) as? MainUICollectionViewCell,
+          let news else {
       return UICollectionViewCell()
     }
-    cell.configureCell(with: NewsModel(title: "Hello! My name is Ruslan Khalilulin. I'm an iOS developer. I'm trying to find a jib in IT. I Will be very good developer and always one of the best wherever I' work in", imageName: "myImage"))
+    let categoryKeys = Array(news.keys)
+    let currentSectionCategory = categoryKeys[indexPath.section]
+    cell.configureCell(with: news[currentSectionCategory] ?? [])
     
     return cell
   }
