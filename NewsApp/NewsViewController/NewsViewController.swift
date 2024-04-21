@@ -5,7 +5,7 @@ class NewsViewController: UIViewController {
   private let newsCategories = [
     "business",
     "entertainment",
-    "general",
+//    "general",
 //    "health",
 //    "nation",
 //    "science",

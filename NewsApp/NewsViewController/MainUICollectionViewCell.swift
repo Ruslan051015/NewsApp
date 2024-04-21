@@ -69,11 +69,14 @@ extension MainUICollectionViewCell: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let cell = collectionView.cellForItem(at: indexPath) as? SecondaryUICollectionViewCell,
     let articleURLString = cell.articleURL,
-    let articleURL = URL(string: articleURLString) else {
+    let articleURL = URL(string: articleURLString),
+    let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+    let sceneDelegate = windowScene.delegate as? SceneDelegate,
+    let rootViewController = sceneDelegate.window?.rootViewController else {
       return
     }
     let safaviView = SFSafariViewController(url: articleURL)
-    UIApplication.shared.windows.first?.rootViewController?.present(safaviView, animated: true)
+    rootViewController.present(safaviView, animated: true)
   }
 }
 

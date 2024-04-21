@@ -50,7 +50,6 @@ final class SecondaryUICollectionViewCell: UICollectionViewCell {
 extension SecondaryUICollectionViewCell {
   func configureCell(with article:ArticleModel) {
     newsLabel.text = article.title
-    let url = article.image
     let imageToURL = URL(string: article.image)
     newsImageView.kf.indicatorType = .activity
     newsImageView.kf.setImage(with: imageToURL, placeholder: UIImage.placeholder, options: [.transition(.fade(1))])
