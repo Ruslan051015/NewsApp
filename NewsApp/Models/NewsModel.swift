@@ -11,3 +11,8 @@ struct ArticleModel: Decodable {
   let image: String
   let url: String
 }
+
+struct CategoryModel {
+  let name: String
+  let articles: [ArticleModel]
+}

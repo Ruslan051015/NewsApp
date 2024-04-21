@@ -17,12 +17,13 @@ final class SecondaryUICollectionViewCell: UICollectionViewCell {
     return cover
   }()
   
-  private lazy var newsLabel: UILabel = {
-    let coverText = UILabel()
+  private lazy var newsLabel: VerticallyAlignedUILabel = {
+    let coverText = VerticallyAlignedUILabel()
     coverText.font = .systemFont(ofSize: 16, weight: .heavy)
     coverText.textColor = UIColor.white
     coverText.textAlignment = .right
-    coverText.numberOfLines = 11
+    coverText.alignment = .bottom
+    coverText.numberOfLines = 10
     
     return coverText
   }()
@@ -45,14 +46,17 @@ final class SecondaryUICollectionViewCell: UICollectionViewCell {
     articleURL = nil
   }
 }
-
 // MARK: - Methods:
 extension SecondaryUICollectionViewCell {
   func configureCell(with article:ArticleModel) {
+    
     newsLabel.text = article.title
     let imageToURL = URL(string: article.image)
     newsImageView.kf.indicatorType = .activity
-    newsImageView.kf.setImage(with: imageToURL, placeholder: UIImage.placeholder, options: [.transition(.fade(1))])
+    newsImageView.kf.setImage(with: imageToURL, placeholder: UIImage.placeholder) { [weak self] result in
+      guard let self else { return }
+      self.addGradient()
+    }
     self.articleURL = article.url
   }
 }
@@ -64,7 +68,6 @@ extension SecondaryUICollectionViewCell {
     newsLabel.translatesAutoresizingMaskIntoConstraints = false
     newsImageView.addSubview(newsLabel)
     contentView.addSubview(newsImageView)
-    
   }
   
   private func setupConstraints() {
@@ -80,4 +83,16 @@ extension SecondaryUICollectionViewCell {
       newsLabel.bottomAnchor.constraint(equalTo: newsImageView.bottomAnchor, constant: -16)
     ])
   }
+  
+  private func addGradient() {
+    super.layoutSubviews()
+    let imageBounds = newsImageView.layer.bounds
+    let gradientFrame = CGRect(x: 0, y: 0, width: imageBounds.width, height: imageBounds.height)
+    let gradient = CAGradientLayer()
+    gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.5).cgColor]
+    gradient.locations = [0.0, 1.0]
+    gradient.frame = gradientFrame
+    newsImageView.layer.insertSublayer(gradient, at: 0)
+  }
 }
+
