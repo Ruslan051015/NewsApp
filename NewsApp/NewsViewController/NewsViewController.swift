@@ -135,13 +135,17 @@ extension NewsViewController {
         let searchedArticles = category.articles.filter { article in
           article.title.lowercased().contains(textToSearch)
         }
-        searchedNews.append(CategoryModel(name: category.name, articles: searchedArticles))
+        if !searchedArticles.isEmpty {
+          searchedNews.append(CategoryModel(name: category.name, articles: searchedArticles))
+        }
       }
     }
-    if searchedNews.isEmpty {
-      visibleNews = news
-    } else {
+    if searchedNews.isEmpty && isSeraching == true {
+      visibleNews = []
+    } else if !searchedNews.isEmpty {
       visibleNews = searchedNews
+    } else {
+      visibleNews = news
     }
     newsCollection.reloadData()
   }
@@ -150,7 +154,10 @@ extension NewsViewController {
 // MARK: - UICollectionViewDelegateFlowLayout:
 extension NewsViewController: UICollectionViewDelegateFlowLayout {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    visibleNews.count
+    if isSeraching && visibleNews.isEmpty {
+      return 0
+    }
+    return visibleNews.count
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
