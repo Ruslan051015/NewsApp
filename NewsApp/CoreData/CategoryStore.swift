@@ -28,7 +28,6 @@ extension CategoryStore {
     if context.hasChanges {
       do {
         try context.save()
-        print("Context successfully saved")
       } catch {
         let nserror = error as NSError
         fatalError("Unresolved error \(nserror), \(nserror.userInfo)")

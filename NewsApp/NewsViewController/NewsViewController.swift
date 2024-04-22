@@ -7,10 +7,10 @@ class NewsViewController: UIViewController {
   // MARK: - Private Properties:
   private let newsCategories = [
     "business",
-    //    "entertainment",
-    //    "general",
-    //    "health",
-    //    "nation",
+    "entertainment",
+    "general",
+    "health",
+//    "nation",
     //    "science",
     //    "sports",
     //    "technology",
@@ -51,6 +51,16 @@ class NewsViewController: UIViewController {
     return collection
   }()
   
+  private lazy var notFoundImageView: UIImageView = {
+    let image = UIImage.notFound
+    let imageView = UIImageView()
+    imageView.contentMode = .scaleAspectFill
+    imageView.image = image
+    imageView.isHidden = true
+    
+    return imageView
+  }()
+  
   // MARK: - LifeCycle:
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -61,6 +71,7 @@ class NewsViewController: UIViewController {
     setupConstraints()
     loadNews()
     setupToHideKeyboardOnTapOnView()
+    showOrHideEmptyStub()
   }
 }
 
@@ -84,6 +95,8 @@ extension NewsViewController {
       $0.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview($0)
     }
+    notFoundImageView.translatesAutoresizingMaskIntoConstraints = false
+    newsCollection.addSubview(notFoundImageView)
   }
   
   private func setupConstraints() {
@@ -95,8 +108,13 @@ extension NewsViewController {
       
       newsCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       newsCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      newsCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-      newsCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      newsCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 6),
+      newsCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      
+      notFoundImageView.centerXAnchor.constraint(equalTo: newsCollection.centerXAnchor),
+      notFoundImageView.centerYAnchor.constraint(equalTo: newsCollection.centerYAnchor),
+      notFoundImageView.heightAnchor.constraint(equalToConstant: 200),
+      notFoundImageView.widthAnchor.constraint(equalToConstant: 200)
     ])
   }
   
@@ -147,7 +165,12 @@ extension NewsViewController {
     } else {
       visibleNews = news
     }
+    showOrHideEmptyStub()
     newsCollection.reloadData()
+  }
+  
+  private func showOrHideEmptyStub() {
+    notFoundImageView.isHidden = (isSeraching && visibleNews.isEmpty) ? false : true
   }
 }
 
