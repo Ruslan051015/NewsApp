@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A3450BB2BD5C8F4009DCFBC /* NewsDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EB82BD5964F00E9D865 /* NewsDataModel.xcdatamodeld */; };
+		4A3450C12BD5DD79009DCFBC /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3450C02BD5DD79009DCFBC /* Reachability */; };
 		4AAA9EA32BD545C800E9D865 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EA22BD545C800E9D865 /* Constants.swift */; };
 		4AAA9EA62BD5474700E9D865 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA9EA52BD5474700E9D865 /* NetworkClient.swift */; };
 		4AAA9EA92BD5478100E9D865 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4AAA9EA82BD5478100E9D865 /* Alamofire */; };
@@ -55,6 +56,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AAA9EB42BD5756400E9D865 /* Kingfisher in Frameworks */,
+				4A3450C12BD5DD79009DCFBC /* Reachability in Frameworks */,
 				4AAA9EA92BD5478100E9D865 /* Alamofire in Frameworks */,
 				4AAA9EAF2BD56DF600E9D865 /* ProgressHUD in Frameworks */,
 			);
@@ -63,13 +65,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4AAA9EA42BD5473000E9D865 /* NetworkClient */ = {
+		4AAA9EA42BD5473000E9D865 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				4AAA9EA22BD545C800E9D865 /* Constants.swift */,
 				4AAA9EA52BD5474700E9D865 /* NetworkClient.swift */,
 			);
-			path = NetworkClient;
+			path = Network;
 			sourceTree = "<group>";
 		};
 		4AAA9EAA2BD56A9C00E9D865 /* Helpers */ = {
@@ -118,7 +120,7 @@
 			children = (
 				4AAA9EB72BD5962400E9D865 /* CoreData */,
 				4AAA9EAA2BD56A9C00E9D865 /* Helpers */,
-				4AAA9EA42BD5473000E9D865 /* NetworkClient */,
+				4AAA9EA42BD5473000E9D865 /* Network */,
 				4ADF7BEF2BD3E7530079D710 /* Models */,
 				4AE1ADB62BD2819B00EDC2F1 /* AppDelegate.swift */,
 				4AE1ADB82BD2819B00EDC2F1 /* SceneDelegate.swift */,
@@ -163,6 +165,7 @@
 				4AAA9EA82BD5478100E9D865 /* Alamofire */,
 				4AAA9EAE2BD56DF600E9D865 /* ProgressHUD */,
 				4AAA9EB32BD5756400E9D865 /* Kingfisher */,
+				4A3450C02BD5DD79009DCFBC /* Reachability */,
 			);
 			productName = NewsApp;
 			productReference = 4AE1ADB32BD2819B00EDC2F1 /* NewsApp.app */;
@@ -196,6 +199,7 @@
 				4AAA9EA72BD5478100E9D865 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				4AAA9EAD2BD56DF600E9D865 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 				4AAA9EB22BD5756400E9D865 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				4A3450BF2BD5DD79009DCFBC /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = 4AE1ADB42BD2819B00EDC2F1 /* Products */;
 			projectDirPath = "";
@@ -457,6 +461,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4A3450BF2BD5DD79009DCFBC /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		4AAA9EA72BD5478100E9D865 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire?ysclid=lus3gx2ytl294112242";
@@ -484,6 +496,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4A3450C02BD5DD79009DCFBC /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A3450BF2BD5DD79009DCFBC /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
 		4AAA9EA82BD5478100E9D865 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4AAA9EA72BD5478100E9D865 /* XCRemoteSwiftPackageReference "Alamofire" */;

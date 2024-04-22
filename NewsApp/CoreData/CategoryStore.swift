@@ -68,22 +68,22 @@ extension CategoryStore {
   }
   
   func deleteAllCategories() {
-    let request = CategoryCoreDataModel.fetchRequest()
+    let request = NSFetchRequest<CategoryCoreDataModel>(entityName: "CategoryCoreDataModel")
     request.returnsObjectsAsFaults = false
-    var coreDataCategories: [CategoryCoreDataModel]?
     do {
-      coreDataCategories = try context.fetch(request)
+      let categories = try context.fetch(request)
+      for category in categories {
+        if let articles = category.articles {
+          for case let article as ArticleCoreDataModel in articles {
+            context.delete(article)
+          }
+        }
+        context.delete(category)
+      }
+      saveContext()
     } catch {
-      print("Не удалось получить категори")
+      print("Ошибка при удалении категорий: \(error)")
     }
-    guard let categories = coreDataCategories else {
-      fatalError("Не удалось получить категории")
-    }
-    
-    categories.forEach {
-      context.delete($0)
-    }
-    saveContext()
   }
   
   // MARK: - Private Methods:
@@ -91,9 +91,10 @@ extension CategoryStore {
     var categories: [CategoryModel] = []
     
     for categoryCoreDataModel in categoryCoreDataModels {
-      var articles: [ArticleModel] = []
-      
-      if let articlesSet = categoryCoreDataModel.articles, let articleCoreDataModels = articlesSet.allObjects as? [ArticleCoreDataModel] {
+      if let categoryName = categoryCoreDataModel.name,
+         let articlesSet = categoryCoreDataModel.articles,
+         let articleCoreDataModels = articlesSet.allObjects as? [ArticleCoreDataModel] {
+        var articles: [ArticleModel] = []
         for articleCoreDataModel in articleCoreDataModels {
           if let title = articleCoreDataModel.title,
              let image = articleCoreDataModel.image,
@@ -102,10 +103,7 @@ extension CategoryStore {
             articles.append(articleModel)
           }
         }
-      }
-      
-      if let name = categoryCoreDataModel.name {
-        let categoryModel = CategoryModel(name: name, articles: articles)
+        let categoryModel = CategoryModel(name: categoryName, articles: articles)
         categories.append(categoryModel)
       }
     }

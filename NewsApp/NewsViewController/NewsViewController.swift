@@ -1,21 +1,23 @@
 import UIKit
+import Reachability
 
 class NewsViewController: UIViewController {
   // MARK: - Private Properties:
   private let newsCategories = [
     "business",
-//    "entertainment",
-//    "general",
-//    "health",
-//    "nation",
-//    "science",
-//    "sports",
-//    "technology",
-//    "world"
+    "entertainment",
+    "general",
+    "health",
+    "nation",
+    "science",
+    "sports",
+    "technology",
+    "world"
   ]
   private var news: [CategoryModel]? = []
   private let networkClient = NetworkClient()
   private let categoryStore = CategoryStore.shared
+  private var reachability: Reachability?
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -39,18 +41,7 @@ class NewsViewController: UIViewController {
     configureNavbar()
     setupLayout()
     setupConstraints()
-    let categoies = try? categoryStore.fetchCategories()
-    print(categoies)
-//    networkClient.fetchNews(for: newsCategories) { [weak self] result in
-//      guard let self else { return }
-//      self.news = result
-//      newsCollection.reloadData()
-//      for category in result {
-//        category.articles.forEach { self.categoryStore.createCoreDataArticle(from: $0, and: category.name)
-//        }
-//      }
-//      UIBlockingProgressHUD.hide()
-//    }
+    configureReachability()
   }
 }
 
@@ -83,6 +74,41 @@ extension NewsViewController {
       newsCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       newsCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
+  }
+  
+  private func checkNetworkConnection(_ reachability: Reachability) {
+    switch reachability.connection {
+    case .cellular, .wifi:
+      categoryStore.deleteAllCategories()
+      networkClient.fetchNews(for: newsCategories) { [weak self] result in
+        guard let self else { return }
+        self.news = result
+        newsCollection.reloadData()
+        for category in result {
+          category.articles.forEach { self.categoryStore.createCoreDataArticle(from: $0, and: category.name)
+          }
+        }
+        UIBlockingProgressHUD.hide()
+      }
+    case .unavailable:
+      guard let categoies = try? categoryStore.fetchCategories() else { return }
+      news = categoies
+      newsCollection.reloadData()
+      UIBlockingProgressHUD.hide()
+    }
+  }
+  
+  private func configureReachability() {
+    do {
+      reachability = try Reachability()
+      if let reachability = reachability {
+        checkNetworkConnection(reachability)
+      } else {
+        print("Reachability is nil")
+      }
+    } catch {
+      print("Unable to create Reachability")
+    }
   }
 }
 

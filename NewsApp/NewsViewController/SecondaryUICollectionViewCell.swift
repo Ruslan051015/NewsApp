@@ -90,11 +90,13 @@ extension SecondaryUICollectionViewCell {
   }
   
   private func addGradient() {
-    super.layoutSubviews()
+    if let existingGradientLayer = newsImageView.layer.sublayers?.first(where: { $0 is CAGradientLayer}) as? CAGradientLayer {
+      return
+    }
     let imageBounds = newsImageView.layer.bounds
     let gradientFrame = CGRect(x: 0, y: 0, width: imageBounds.width, height: imageBounds.height)
     let gradient = CAGradientLayer()
-    gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.5).cgColor]
+    gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(1.0).cgColor]
     gradient.locations = [0.0, 1.0]
     gradient.frame = gradientFrame
     newsImageView.layer.insertSublayer(gradient, at: 0)
