@@ -7,18 +7,35 @@ class NewsViewController: UIViewController {
   // MARK: - Private Properties:
   private let newsCategories = [
     "business",
-    "entertainment",
-    "general",
-    "health",
-    "nation",
-    "science",
-    "sports",
-    "technology",
-    "world"
+    //    "entertainment",
+    //    "general",
+    //    "health",
+    //    "nation",
+    //    "science",
+    //    "sports",
+    //    "technology",
+    //    "world"
   ]
   private var news: [CategoryModel]? = []
+  private var visibleNews: [CategoryModel] = []
   private let networkClient = NetworkClient()
   private let categoryStore = CategoryStore.shared
+  private var isSeraching: Bool = false
+  private lazy var searchBar: UISearchBar = {
+    let bar = UISearchBar()
+    bar.delegate = self
+    bar.translatesAutoresizingMaskIntoConstraints = false
+    bar.placeholder = "Search news"
+    bar.backgroundImage = .none
+    bar.backgroundColor = .none
+    bar.searchTextField.backgroundColor = .lightGray
+    bar.searchBarStyle = .minimal
+    bar.searchTextField.clearButtonMode = .never
+    bar.updateHeight(height: 36)
+    
+    return bar
+  }()
+  
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -43,6 +60,7 @@ class NewsViewController: UIViewController {
     setupLayout()
     setupConstraints()
     loadNews()
+    setupToHideKeyboardOnTapOnView()
   }
 }
 
@@ -62,7 +80,7 @@ extension NewsViewController {
   }
   
   private func setupLayout() {
-    [newsCollection].forEach {
+    [searchBar, newsCollection].forEach {
       $0.translatesAutoresizingMaskIntoConstraints = false
       view.addSubview($0)
     }
@@ -70,9 +88,14 @@ extension NewsViewController {
   
   private func setupConstraints() {
     NSLayoutConstraint.activate([
+      searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 4),
+      searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -4),
+      searchBar.heightAnchor.constraint(equalToConstant: 36),
+      
       newsCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
       newsCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-      newsCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      newsCollection.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
       newsCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ])
   }
@@ -84,6 +107,7 @@ extension NewsViewController {
       networkClient.fetchNews(for: newsCategories) { [weak self] result in
         guard let self else { return }
         self.news = result
+        self.visibleNews = result
         newsCollection.reloadData()
         for category in result {
           category.articles.forEach { self.categoryStore.createCoreDataArticle(from: $0, and: category.name)
@@ -94,19 +118,39 @@ extension NewsViewController {
     } else {
       guard let categoies = try? categoryStore.fetchCategories() else { return }
       news = categoies
+      visibleNews = categoies
       newsCollection.reloadData()
       UIBlockingProgressHUD.hide()
     }
+  }
+  
+  private func reloadVisibleNews() {
+    let textToSearch = (searchBar.searchTextField.text ?? "").lowercased()
+    var searchedNews: [CategoryModel] = []
+    guard let news else {
+      return
+    }
+    if !textToSearch.isEmpty {
+      for category in news {
+        let searchedArticles = category.articles.filter { article in
+          article.title.lowercased().contains(textToSearch)
+        }
+        searchedNews.append(CategoryModel(name: category.name, articles: searchedArticles))
+      }
+    }
+    if searchedNews.isEmpty {
+      visibleNews = news
+    } else {
+      visibleNews = searchedNews
+    }
+    newsCollection.reloadData()
   }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout:
 extension NewsViewController: UICollectionViewDelegateFlowLayout {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
-    guard let news else {
-      return 0
-    }
-    return news.count
+    visibleNews.count
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -118,7 +162,7 @@ extension NewsViewController: UICollectionViewDelegateFlowLayout {
           let news else {
       return UICollectionReusableView()
     }
-    headerView.titleLabel.text = news[indexPath.section].name.capitilizingFirstLetter()
+    headerView.titleLabel.text = visibleNews[indexPath.section].name.capitilizingFirstLetter()
     
     return headerView
   }
@@ -147,12 +191,51 @@ extension NewsViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainUICollectionViewCell.reuseID, for: indexPath) as? MainUICollectionViewCell,
           let news,
-          indexPath.section < news.count else {
+          indexPath.section < visibleNews.count else {
       return UICollectionViewCell()
     }
-    let currentSectionCategory = news[indexPath.section]
+    let currentSectionCategory = visibleNews[indexPath.section]
     cell.configureCell(with: currentSectionCategory)
     
     return cell
+  }
+}
+
+// MARK: - UISearchBarDelegate
+extension NewsViewController: UISearchBarDelegate {
+  func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+    searchBar.showsCancelButton = true
+  }
+  
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    if searchText.isEmpty {
+      isSeraching = false
+    } else {
+      isSeraching = true
+    }
+    reloadVisibleNews()
+  }
+  
+  func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    guard let text = searchBar.searchTextField.text else {
+      return
+    }
+    isSeraching = text.isEmpty ? false : true
+    if text.isEmpty {
+      searchBar.showsCancelButton = false
+    }
+  }
+  
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    isSeraching = false
+    searchBar.text = nil
+    searchBar.showsCancelButton = false
+    reloadVisibleNews()
+  }
+  
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    searchBar.showsCancelButton = false
   }
 }
