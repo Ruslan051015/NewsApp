@@ -1,7 +1,9 @@
 import UIKit
-import Reachability
 
 class NewsViewController: UIViewController {
+  // MARK: - Properties:
+  var isConnectedToNetwork: Bool?
+  
   // MARK: - Private Properties:
   private let newsCategories = [
     "business",
@@ -17,7 +19,6 @@ class NewsViewController: UIViewController {
   private var news: [CategoryModel]? = []
   private let networkClient = NetworkClient()
   private let categoryStore = CategoryStore.shared
-  private var reachability: Reachability?
   private lazy var newsCollection: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
     layout.scrollDirection = .vertical
@@ -41,7 +42,7 @@ class NewsViewController: UIViewController {
     configureNavbar()
     setupLayout()
     setupConstraints()
-    configureReachability()
+    loadNews()
   }
 }
 
@@ -76,9 +77,9 @@ extension NewsViewController {
     ])
   }
   
-  private func checkNetworkConnection(_ reachability: Reachability) {
-    switch reachability.connection {
-    case .cellular, .wifi:
+  private func loadNews() {
+    guard let isConnected = isConnectedToNetwork else { return }
+    if isConnected {
       categoryStore.deleteAllCategories()
       networkClient.fetchNews(for: newsCategories) { [weak self] result in
         guard let self else { return }
@@ -90,31 +91,13 @@ extension NewsViewController {
         }
         UIBlockingProgressHUD.hide()
       }
-    case .unavailable:
+    } else {
       guard let categoies = try? categoryStore.fetchCategories() else { return }
       news = categoies
       newsCollection.reloadData()
       UIBlockingProgressHUD.hide()
     }
   }
-  
-  private func configureReachability() {
-    do {
-      reachability = try Reachability()
-      if let reachability = reachability {
-        checkNetworkConnection(reachability)
-      } else {
-        print("Reachability is nil")
-      }
-    } catch {
-      print("Unable to create Reachability")
-    }
-  }
-}
-
-// MARK: - Objc-Methods:
-extension NewsViewController {
-  
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout:
@@ -163,7 +146,8 @@ extension NewsViewController: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainUICollectionViewCell.reuseID, for: indexPath) as? MainUICollectionViewCell,
-          let news else {
+          let news,
+          indexPath.section < news.count else {
       return UICollectionViewCell()
     }
     let currentSectionCategory = news[indexPath.section]

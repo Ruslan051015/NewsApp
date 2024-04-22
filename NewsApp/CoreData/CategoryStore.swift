@@ -37,15 +37,31 @@ extension CategoryStore {
   }
   
   func createCoreDataArticle(from article: ArticleModel, and category: String) {
-    let coreDataCategory = CategoryCoreDataModel(context: context)
-    let coreDataArticle = ArticleCoreDataModel(context: context)
-    coreDataCategory.name = category
-    coreDataArticle.title = article.title
-    coreDataArticle.image = article.image
-    coreDataArticle.url = article.url
-    coreDataArticle.category = coreDataCategory
+    let categoryRequest = CategoryCoreDataModel.fetchRequest()
+    categoryRequest.predicate = NSPredicate(format: "%K == %@", #keyPath(CategoryCoreDataModel.name), category)
     
-    saveContext()
+    do {
+      let existingCategory = try context.fetch(categoryRequest)
+      
+      if let existingCategory = existingCategory.first {
+        let coreDataArticle = ArticleCoreDataModel(context: context)
+        coreDataArticle.title = article.title
+        coreDataArticle.image = article.image
+        coreDataArticle.url = article.url
+        coreDataArticle.category = existingCategory
+      } else {
+        let coreDataCategory = CategoryCoreDataModel(context: context)
+        coreDataCategory.name = category
+        let coreDataArticle = ArticleCoreDataModel(context: context)
+        coreDataArticle.title = article.title
+        coreDataArticle.image = article.image
+        coreDataArticle.url = article.url
+        coreDataArticle.category = coreDataCategory
+      }
+      saveContext()
+    } catch {
+      print("Не удалось создать запись в БД")
+    }
   }
   
   func fetchCategories() throws -> [CategoryModel] {
@@ -110,5 +126,4 @@ extension CategoryStore {
     
     return categories
   }
-  
 }
