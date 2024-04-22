@@ -10,11 +10,11 @@ class NewsViewController: UIViewController {
     "entertainment",
     "general",
     "health",
-//    "nation",
-    //    "science",
-    //    "sports",
-    //    "technology",
-    //    "world"
+    "nation",
+    "science",
+    "sports",
+    "technology",
+    "world"
   ]
   private var news: [CategoryModel]? = []
   private var visibleNews: [CategoryModel] = []
